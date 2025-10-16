@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;800;900&display=swap");
+
+body {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  background-color: #f0f0f0;
+  padding: 30px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+
+  p {
+    font-size: 30px;
+  }
+
+  .add-acardion {
+    max-height: 40px;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input,
+textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: none;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.item {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: #fff;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.question {
+  border-radius: 8px;
+  padding: 10px 15px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.question:hover {
+  background: #eaeaea;
+}
+
+.answer {
+  border-radius: 10px;
+  display: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333;
+  background: #fafafa;
+  border-top: 1px solid #ddd;
+  overflow-wrap: break-word;
+  transition: all 0.3s ease;
+}
+
+.open .answer {
+  display: block;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.actions button {
+  background: #ddd;
+  color: #333;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.actions .edit:hover {
+  background: orange;
+  color: white;
+}
+
+.actions .delete:hover {
+  background: red;
+  color: white;
+}
+
+.faq {
+  display: none;
+}
+
+.fa-solid {
+  transform: rotate(0deg);
+  transition: transform 0.4s ease;
+  margin-left: 8px;
+}
+
+.item.open .fa-solid {
+  transform: rotate(-180deg);
+}
+
+@media screen and (max-width: 1240px) {
+  .arrow-1 {
+    display: none;
+  }
+  .arrow-2 {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .top {
+    flex-direction: column;
+  }
+
+  .arrow-2 {
+    display: none;
+  }
+
+  .arrow-1 {
+    display: flex;
+  }
+  .question {
+    flex-direction: column;
+  }
+}
+

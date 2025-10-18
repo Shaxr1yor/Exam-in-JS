@@ -19,22 +19,43 @@ async function getData() {
     id: item.id,
     question: item.question,
     answer: item.answer,
-  }));
+  }));  
   renderFaqs();
 }
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  
+  const question = questionInput.value.trim();
+  const answer = answerInput.value.trim();
+
+  if (!question || !answer) {
+    alert("Iltimos savol va javob kiriting");
+    return;
+  }
+
   const newFaq = {
-    id: Date.now(),
-    question: questionInput.value,
-    answer: answerInput.value,
-  };
-  faqs.push(newFaq);
-  renderFaqs();
-  form.reset();
-  faq.style.display = "none";
-  addAccordion.style.display = "flex";
+    question,
+    answer,
+  }
+
+  const resPost = await fetch("https://faq-crud.onrender.com/api/faqs", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newFaq),
+  });
+
+  if (resPost.ok) {
+    await getData();
+    form.reset();
+    faq.style.display = "none";
+    addAccordion.style.display = "flex";
+  } else {
+    alert("Qo‘shishda xatolik yuz berdi.");
+  }
 });
 
 function renderFaqs() {
@@ -45,37 +66,60 @@ function renderFaqs() {
     item.innerHTML = `
       <div class="question">
         <span>${faq.question}</span>
-        <div class="actions">
           <i class="fa-solid fa-angle-down"></i>
+      </div>
+      <div class="answer">${faq.answer}
+          <div class="actions">
           <button class="edit">Edit</button>
           <button class="delete">Delete</button>
-        </div>
-      </div>
-      <div class="answer">${faq.answer}</div>
+          </div>
+          </div>
+      
     `;
 
     item.querySelector(".question").addEventListener("click", (e) => {
-      if (
-        !e.target.classList.contains("edit") &&
-        !e.target.classList.contains("delete")
-      ) {
-        item.classList.toggle("open");
-      }
+      item.classList.toggle("open");
     });
 
-    item.querySelector(".edit").addEventListener("click", () => {
+    item.querySelector(".edit").addEventListener("click", async () => {
       const newQ = prompt("Yangi savol:", faq.question);
       const newA = prompt("Yangi javob:", faq.answer);
       if (newQ && newA) {
-        faq.question = newQ;
-        faq.answer = newA;
-        renderFaqs();
+        const resPut = await fetch(
+          `https://faq-crud.onrender.com/api/faqs/${faq.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              question: newQ,
+              answer: newA,
+            }),
+          }
+        );
+
+        if (resPut.ok) {
+          await getData();
+        } else {
+          alert("Tahrirlashda xatolik yuz berdi.");
+        }
       }
     });
 
-    item.querySelector(".delete").addEventListener("click", () => {
-      faqs = faqs.filter((f) => f.id !== faq.id);
-      renderFaqs();
+    item.querySelector(".delete").addEventListener("click", async () => {
+      const res = await fetch(
+        `https://faq-crud.onrender.com/api/faqs/${faq.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (res.ok) {
+        await getData();
+      } else {
+        alert("O‘chirishda xatolik yuz berdi.");
+      }
     });
 
     accordion.prepend(item);
